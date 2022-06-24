@@ -1,0 +1,3 @@
+<template>
+produit create
+</template>
