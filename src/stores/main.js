@@ -31,7 +31,9 @@ export const useMainStore = defineStore('main', {
     userEmail: null,
     userAvatar: null,
     error:null,
+    /*IMAGE*/
 
+    image_url:null,
     /* fullScreen - fullscreen form layout (e.g. login page) */
     isFullScreen: true,
 
@@ -67,6 +69,11 @@ export const useMainStore = defineStore('main', {
     setError(payload){
       if (payload) {
         this.error = payload
+      }
+    },
+    setUrl(payload){
+      if (payload) {
+        this.image_url = payload
       }
     },
     setStyle (payload) {

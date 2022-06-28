@@ -1,6 +1,10 @@
 import { projectStorage } from '../firebase/config'
 import { ref } from "vue"
+import { useMainStore } from '@/stores/main'
+
+ 
 //import getUser from "./getUser"
+const mainStore = useMainStore()
 
 //const { user } = getUser()
 
@@ -16,9 +20,14 @@ const useStorage = () => {
     try {
       const res = await storageRef.put(file)
       url.value = await res.ref.getDownloadURL()
+
+      console.log('je suis dans try')
+      mainStore.setUrl(url.value)
+      console.log('1',mainStore.image_url)
     } catch (err) {
       console.log(err.message)
       error.value = err
+      console.log('je suis pas dans try')
     }
   }
 

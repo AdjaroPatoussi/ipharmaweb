@@ -65,7 +65,7 @@ export default [
     }
 
   ],
-  'Examples',
+/*  'Examples',
   [
     {
       to: '/tables',
@@ -135,5 +135,5 @@ export default [
       icon: mdiGithub,
       target: '_blank'
     }
-  ]
+  ]*/
 ]

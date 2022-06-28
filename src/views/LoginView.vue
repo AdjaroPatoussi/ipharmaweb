@@ -19,7 +19,7 @@ import useLogin from '@/composables/useLogin'
 
 
 import { useMainStore } from '@/stores/main'
-
+ 
 
 const mainStore = useMainStore()
  
@@ -54,7 +54,7 @@ const submit = async () => {
          router.push({ name: 'dashboard' })
       }
       else
-      { 
+      {  alert(error.value);
         mainStore.setError(error)
         console.log(form.login,form.pass ,mainStore.error )
 
@@ -108,16 +108,28 @@ const submit = async () => {
           autocomplete="current-password"
         />
       </FormField>
-
-      <FormCheckRadioPicker
+      
+      
+      
+    <FormCheckRadioPicker
         v-model="form.remember"
         name="remember"
         :options="{ remember: 'Se souvenir' }"
       />
-
+      
       <DividerHorizontal />
-
-      <BaseButtons>
+       <div class="flex items-center justify-center mt-6">
+       <a
+          href="/#/resetpassword"
+          target=""
+          class="text-green-600"
+        >Mot de passe oublié ?</a>
+        </div>
+     
+      
+    <DividerHorizontal />
+    
+     <BaseButtons> 
         <BaseButton
           type="submit"
           color="info"
@@ -130,17 +142,22 @@ const submit = async () => {
           label="Annuler"
           type="reset"
         />
-          <BaseButton
-          to="/resetpassword"
-          color="info"
-          outline
-          label="Annuler"
-          type="reset"
-        />
+         
       </BaseButtons>
-     <div v-if="error"  >{{ error }}</div>
+      
+      <DividerHorizontal />
+      <div class="flex items-center justify-center mt-6">
+       <BaseButton
+          to="/register"
+          color="success"
+          type="success"
+          outline
+          label="Créer nouveau compte"
+          
+        />
+        </div>
     </CardBox>
-
+     
     
   </SectionFullScreen>
   

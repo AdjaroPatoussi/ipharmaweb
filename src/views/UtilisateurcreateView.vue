@@ -9,13 +9,16 @@ import DividerHorizontal from '@/components/DividerHorizontal.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import BaseButtons from '@/components/BaseButtons.vue'
 import SectionTitleBarSub from '@/components/SectionTitleBarSub.vue'
-import { projectAuth,projectFirestore,projectStorage } from '../firebase/config';
+import { projectAuth,projectFirestore  } from '../firebase/config';
 import useStorage from '@/composables/useStorage'
-import useCollection from '@/composables/useCollection'
-import getUser from '@/composables/getUser'
+ 
 import { timestamp } from '@/firebase/config'
 import { useRouter } from 'vue-router'
-import useSignup from '@/composables/useSignup'
+ 
+import { useMainStore } from '@/stores/main'
+
+const mainStore = useMainStore()
+mainStore.setUrl(null)
 const p  = reactive({
   nom: '',
   responsable:'',
@@ -27,29 +30,49 @@ const p  = reactive({
   image: null
 })
 
-
-const { filePath, url, uploadImage } = useStorage()
-const { error, addDoc } = useCollection('pharmacie')
-const { user } = getUser()
+ 
 const router = useRouter()
-const { errorr, signup, isPending } = useSignup()
+
+
+const { url,filePath,uploadImage } = useStorage()
+console.log('2',url.value)
+// const { error, addDoc } = useCollection('pharmacie')
+// const { user } = getUser()
+// const router = useRouter()
+// const { errorr, signup, isPending } = useSignup()
  
 const newPassword = 'projectAut3AVR3 3V 3ABVREZVBe"h.sword()';
 
 console.log(newPassword)
+console.log('3',url.value)
 const handleSubmit = async () => {
      projectAuth.createUserWithEmailAndPassword(p.email, newPassword)
                 .then((user) => {
                      if (p.image.value) {
-                       uploadImage(p.image.value,user.user.uid )
+                      uploadImage(p.image.value,user.user.uid )
                      }
-                      
+                     
+                    console.log(mainStore.image_url)
                     projectFirestore.collection("pharmacie").doc(user.user.uid).set({
                         nom: p.nom,
+                        responsable: p.responsable,
                         email:p.email,
+                        phone:p.phone,
+                        adress:p.address,
+                        latitude:p.latitude,
+                        longitude:p.longitude,
+                        coverUrl: mainStore.image_url,
+                        filePath: filePath.value,
+                        createdAt: timestamp(),
+                        is_active:true,
+                        is_open:false,
+                       
                     })
                      .then(function() {
-                        console.log("Document successfully written!");
+                       console.log(mainStore.image_url)
+                       mainStore.setUrl(null)
+                      console.log("Document successfully written!")
+                      router.push({ name: 'dashboard' })
                     })
                     .catch(function(error) {
                         console.error("Error writing document: ", error);
@@ -87,7 +110,7 @@ const handleSubmit = async () => {
       //   }
      }
     
-
+    console.log('5',url.value)
     // allowed file types
     const types = ['image/png', 'image/jpeg']
     const handleChange = (e) => {
@@ -103,8 +126,8 @@ const handleSubmit = async () => {
       }
     }
    
+    console.log('4',url.value)
 
- 
 
 </script>
 
@@ -194,7 +217,7 @@ const handleSubmit = async () => {
 
       </FormField>
         <DividerHorizontal />
-       <FormField
+      <FormField
         label="Photo   de la  parmacie"
         help="Photo  de  la pharmacie"
         >
